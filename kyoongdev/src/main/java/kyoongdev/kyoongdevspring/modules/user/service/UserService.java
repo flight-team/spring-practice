@@ -5,11 +5,14 @@ import static java.util.stream.Collectors.toList;
 import java.util.List;
 import java.util.Optional;
 
+import com.mysql.cj.QueryResult;
 import kyoongdev.kyoongdevspring.common.PagingDTO;
 import kyoongdev.kyoongdevspring.common.ResponseWithIdDTO;
-import kyoongdev.kyoongdevspring.modules.user.dto.UpsertUserDTO;
+import kyoongdev.kyoongdevspring.modules.user.dto.CreateUserDTO;
+import kyoongdev.kyoongdevspring.modules.user.dto.UpdateUserDTO;
 import kyoongdev.kyoongdevspring.modules.user.dto.UserDTO;
 import kyoongdev.kyoongdevspring.modules.user.entity.User;
+import kyoongdev.kyoongdevspring.modules.user.mapper.UserMapper;
 import kyoongdev.kyoongdevspring.modules.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -22,15 +25,25 @@ import org.webjars.NotFoundException;
 public class UserService {
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
+    UserMapper userMapper;
 
     @Autowired
-    UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
     }
 
+    public User findUserById(String id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            throw new NotFoundException("User not found");
+        }
 
-    public UserDTO getUser(String id) {
+        return user.get();
+    }
+
+    public UserDTO getUserWithDTO(String id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
             throw new NotFoundException("User not found");
@@ -44,13 +57,13 @@ public class UserService {
     }
 
     public PagingDTO<UserDTO> getUsers(Pageable pageable) {
-        Long count = userRepository.countAllBy();
+        Long count = userRepository.countBy();
         List<UserDTO> users = userRepository.findAll(pageable).stream().map(UserDTO::new).collect(toList());
 
-        return new PagingDTO<>(users, pageable, count);
+        return PagingDTO.<UserDTO>builder().data(users).paging(PagingDTO.getPagination(pageable, count)).build();
     }
 
-    public ResponseWithIdDTO createUser(UpsertUserDTO props) {
+    public ResponseWithIdDTO createUser(CreateUserDTO props) {
         Optional<User> isExist = getUserByName(props.getName());
 
         if (isExist.isPresent()) {
@@ -62,14 +75,17 @@ public class UserService {
         return ResponseWithIdDTO.builder().id(user.getId()).build();
     }
 
-    public void updateUser(String id, UpsertUserDTO props) {
-        this.getUser(id);
+    public void updateUser(String id, UpdateUserDTO props) {
+        User user = this.findUserById(id);
+
         props.hashPassword(passwordEncoder);
-        userRepository.save(props.toEntity());
+        userMapper.updateUserFromRequest(props, user);
+
+        userRepository.save(user);
     }
 
     public void deleteUser(String id) {
-        this.getUser(id);
+        this.findUserById(id);
         userRepository.deleteById(id);
     }
 }

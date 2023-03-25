@@ -13,7 +13,8 @@ import java.util.List;
 
 import kyoongdev.kyoongdevspring.common.PagingDTO;
 import kyoongdev.kyoongdevspring.common.ResponseWithIdDTO;
-import kyoongdev.kyoongdevspring.modules.user.dto.UpsertUserDTO;
+import kyoongdev.kyoongdevspring.modules.user.dto.CreateUserDTO;
+import kyoongdev.kyoongdevspring.modules.user.dto.UpdateUserDTO;
 import kyoongdev.kyoongdevspring.modules.user.dto.UserDTO;
 import kyoongdev.kyoongdevspring.modules.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "멤버", description = "멤버 조회")
+@Tag(name = "유저", description = "유저 조회")
 @RestController
-@RequestMapping("/members")
+@RequestMapping("/users")
 public class UserController {
     public final UserService userService;
 
@@ -40,7 +41,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @Operation(summary = "members 조회", description = "members 조회 메서드입니다.")
+    @Operation(summary = "유저 조회", description = "유저 조회 메서드입니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = UserDTO.class)))),
             @ApiResponse(responseCode = "400", description = "Bad Request")
@@ -50,30 +51,30 @@ public class UserController {
         return userService.getUsers(pageable);
     }
 
-    @Operation(summary = "member 조회", description = "member 조회 메서드입니다.")
+    @Operation(summary = "유저 조회", description = "유저 조회 메서드입니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad Request")
     })
     @GetMapping("{id}")
     UserDTO findUser(@PathVariable("id") String id) {
-        return userService.getUser(id);
+        return userService.getUserWithDTO(id);
     }
 
-    @Operation(summary = "member 생성", description = "member 생성 메서드입니다.")
+    @Operation(summary = "유저 생성", description = "유저 생성 메서드입니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "생성 성공", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWithIdDTO.class))),
             @ApiResponse(responseCode = "400", description = "Bad Request")
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    ResponseWithIdDTO createUser(@RequestBody UpsertUserDTO user) {
+    ResponseWithIdDTO createUser(@RequestBody CreateUserDTO user) {
         return userService.createUser(user);
     }
 
     @PatchMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void updateUser(@PathVariable("id") String id, @RequestBody UpsertUserDTO user) {
+    void updateUser(@PathVariable("id") String id, @RequestBody UpdateUserDTO user) {
         userService.updateUser(id, user);
     }
 
