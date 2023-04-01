@@ -7,9 +7,8 @@ import kyoongdev.kyoongdevspring.modules.post.dto.CreatePostDTO;
 import kyoongdev.kyoongdevspring.modules.post.dto.PostDTO;
 import kyoongdev.kyoongdevspring.modules.post.dto.UpdatePostDTO;
 import kyoongdev.kyoongdevspring.modules.post.entity.Post;
-import kyoongdev.kyoongdevspring.modules.post.mapper.PostMapper;
+import kyoongdev.kyoongdevspring.modules.post.mapper.PostMap;
 import kyoongdev.kyoongdevspring.modules.post.repository.PostRepository;
-import kyoongdev.kyoongdevspring.modules.user.dto.UserDTO;
 import kyoongdev.kyoongdevspring.modules.user.entity.User;
 import kyoongdev.kyoongdevspring.modules.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +24,13 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class PostService {
     PostRepository postRepository;
-
-    PostMapper postMapper;
+    PostMap postMap;
     UserService userService;
 
     @Autowired
-    PostService(PostRepository postRepository, UserService userService, PostMapper postMapper) {
+    PostService(PostRepository postRepository, UserService userService, PostMap postMap) {
         this.postRepository = postRepository;
-        this.postMapper = postMapper;
+        this.postMap = postMap;
         this.userService = userService;
     }
 
@@ -78,7 +76,8 @@ public class PostService {
 
     public void updatePost(String id, UpdatePostDTO postDTO) {
         Post post = findPostById(id);
-        postMapper.updatePostFromRequest(postDTO, post);
+        postMap.updatePostFromRequest(postDTO, post);
+
 
         postRepository.save(post);
     }

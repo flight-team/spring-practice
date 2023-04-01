@@ -3,7 +3,6 @@ package kyoongdev.kyoongdevspring.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -25,8 +24,6 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .headers().frameOptions().disable();
-
-
         return http.build();
     }
 
@@ -34,6 +31,5 @@ public class SecurityConfig {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
 }

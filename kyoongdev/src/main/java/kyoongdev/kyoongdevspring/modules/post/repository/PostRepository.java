@@ -1,7 +1,6 @@
 package kyoongdev.kyoongdevspring.modules.post.repository;
 
 import kyoongdev.kyoongdevspring.modules.post.entity.Post;
-import kyoongdev.kyoongdevspring.modules.user.entity.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -16,5 +15,4 @@ public interface PostRepository extends JpaRepository<Post, String> {
     List<Post> findAllByUserId(Pageable pageable, String userId);
 
     Long countBy();
-
 }

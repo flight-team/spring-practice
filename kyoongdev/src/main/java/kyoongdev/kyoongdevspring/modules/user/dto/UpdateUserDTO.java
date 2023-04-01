@@ -9,11 +9,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class UpdateUserDTO {
 
     @Schema(nullable = true)
-
     private String name;
     @Schema(nullable = true)
     private String email;
-    @Schema(nullable = false)
+    @Schema(nullable = true)
     private String password;
 
     public UpdateUserDTO hashPassword(PasswordEncoder passwordEncoder) {

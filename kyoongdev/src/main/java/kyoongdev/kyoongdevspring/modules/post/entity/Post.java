@@ -9,8 +9,6 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity
@@ -35,4 +33,6 @@ public class Post {
     @ManyToOne(optional = true)
     @JoinColumn(name = "USER_ID")
     private User user;
+
+
 }

@@ -16,6 +16,7 @@ import kyoongdev.kyoongdevspring.common.ResponseWithIdDTO;
 import kyoongdev.kyoongdevspring.modules.user.dto.CreateUserDTO;
 import kyoongdev.kyoongdevspring.modules.user.dto.UpdateUserDTO;
 import kyoongdev.kyoongdevspring.modules.user.dto.UserDTO;
+import kyoongdev.kyoongdevspring.modules.user.entity.User;
 import kyoongdev.kyoongdevspring.modules.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;

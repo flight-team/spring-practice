@@ -17,7 +17,6 @@ import java.util.List;
 @NoArgsConstructor
 @SuperBuilder
 @DynamicUpdate
-
 public class User {
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -32,7 +31,5 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> post = new ArrayList<>();
-
-
 }
 

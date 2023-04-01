@@ -11,6 +11,7 @@ import kyoongdev.kyoongdevspring.common.ResponseWithIdDTO;
 import kyoongdev.kyoongdevspring.modules.user.dto.CreateUserDTO;
 import kyoongdev.kyoongdevspring.modules.user.dto.UpdateUserDTO;
 import kyoongdev.kyoongdevspring.modules.user.dto.UserDTO;
+import kyoongdev.kyoongdevspring.modules.user.dto.UserDetailDTO;
 import kyoongdev.kyoongdevspring.modules.user.entity.User;
 import kyoongdev.kyoongdevspring.modules.user.mapper.UserMapper;
 import kyoongdev.kyoongdevspring.modules.user.repository.UserRepository;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import org.webjars.NotFoundException;
 
 
@@ -42,6 +44,22 @@ public class UserService {
 
         return user.get();
     }
+
+
+    public UserDetailDTO findUserByEmail(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty()) {
+            throw new NotFoundException("User not found");
+        }
+
+        return UserDetailDTO.builder()
+                .email(user.get().getEmail())
+                .id(user.get().getId())
+                .name(user.get().getName())
+                .password(user.get().getPassword())
+                .build();
+    }
+
 
     public UserDTO getUserWithDTO(String id) {
         Optional<User> user = userRepository.findById(id);

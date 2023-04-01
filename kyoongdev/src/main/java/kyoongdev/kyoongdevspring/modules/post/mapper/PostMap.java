@@ -9,12 +9,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring")
-public interface PostMapper {
-
-
+public interface PostMap {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updatePostFromRequest(UpdatePostDTO updatePostDTO, @MappingTarget Post post);
-
-
-
 }
