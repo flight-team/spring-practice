@@ -23,7 +23,7 @@ public class Comment {
 	private long id;
 	private String content;
 	private String authorIp;
-	private LocalDateTime createdAt;
+	private LocalDateTime createdAt;	//db설정으로 insert시 기본값 지정
 	private LocalDateTime modifiedAt;
 	
 	@ManyToOne
@@ -45,5 +45,5 @@ public class Comment {
         this.content = content;
         this.modifiedAt = LocalDateTime.now();
     }
-	
+    
 }

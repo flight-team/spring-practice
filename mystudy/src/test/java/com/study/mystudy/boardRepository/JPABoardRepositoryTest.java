@@ -38,14 +38,14 @@ public class JPABoardRepositoryTest {
 	}
 
 //	@Test
-	public void 글상세() {
+	public void 하나찾기() {
 		Board result = boardRepository.findBoard(2L).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
 		log.info(result.toString());
 	}
 
 	@Test
 	@Commit
-	public void 글수정() {
+	public void 수정() {
 		Board board = Board.builder()
 				.title("여행")
 				.content("부산......")

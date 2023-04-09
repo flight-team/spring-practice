@@ -20,4 +20,5 @@ public interface BoardRepository {
 	//글삭제
 	Query delete(Board board, Long id);
 	
+	
 }
