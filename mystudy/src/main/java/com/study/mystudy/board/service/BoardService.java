@@ -29,11 +29,11 @@ public class BoardService {
 				.orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
 		return check;
 	}
-
+	
 	@Transactional
 	public Board selectBoardDetail(Long id) { // 글 상세 및 조회수 증가
 		Board board = boardRepository.findBoard(id).orElseThrow(() -> new CustomException(ErrorCode.POSTS_NOT_FOUND));
-		board.updateViewCount(board.getId());
+		board.updateViewCount(board.getId());	//트랜잭션 내에서 실행되는 entity 객체 수정은 실제 테이블에도 반영됨
 		return board;
 	}
 
